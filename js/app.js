@@ -64,12 +64,12 @@ const updateUI = async () => {
 
 const login = async () => {
     await auth0.loginWithRedirect({
-      redirect_uri: window.location.origin
+      redirect_uri: window.location.href
     });
 };
 
 const logout = () => {
     auth0.logout({
-      returnTo: window.location.origin
+      returnTo: window.location.href
     });
 };
