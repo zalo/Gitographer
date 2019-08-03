@@ -1,6 +1,6 @@
 let auth0 = null;
 
-const fetchAuthConfig = () => fetch("/Gitographer/auth_config.json");
+const fetchAuthConfig = () => fetch("/auth_config.json");
 
 const configureClient = async () => {
     const response = await fetchAuthConfig();
@@ -64,12 +64,12 @@ const updateUI = async () => {
 
 const login = async () => {
     await auth0.loginWithRedirect({
-      redirect_uri: window.location.href
+      redirect_uri: window.location.origin
     });
 };
 
 const logout = () => {
     auth0.logout({
-      returnTo: window.location.href
+      returnTo: window.location.origin
     });
 };
