@@ -1,33 +1,75 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <title>SPA SDK Sample</title>
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Gitographer Notes</title>
+    <meta name="description" content="Homepage for the Gitographer Note App">
+    <meta name="author" content="zalo">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/skeleton.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css" />
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="images/favicon.png">
   </head>
 
   <body>
-    <h2>SPA Authentication Sample</h2>
-    <p>Welcome to our page!</p>
-    <button id="btn-login" disabled="true" onclick="login()">Log in</button>
-    <button id="btn-logout" disabled="true" onclick="logout()">Log out</button>
-
-    <div class="hidden" id="gated-content">
-      <p>
-        You're seeing this content because you're currently
-        <strong>logged in</strong>.
-      </p>
-      <label>
-        Access token:
-        <pre id="ipt-access-token"></pre>
-      </label>
-      <label>
-        User profile:
-        <pre id="ipt-user-profile"></pre>
-      </label>
-    </div>
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+      <div class="row">
+        <div class="column" style="margin-top: 2.5%">
+          <h1>Gitographer</h1>
       
-    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.0/auth0-spa-js.production.js"></script>
+          <div id="logged-out">
+            <button id="btn-login" disabled="true" onclick="login()">Log in</button>
+            <p>Gitographer is a minimal, Github-backed Note Taking System.</p>
+            <p>Simply log in, and create a private Gitographer repository to get started.</p>
+            <p>Storing your notes on Github gives you maximum flexibility and control over how they're maintained.</p>
+          </div>
+
+          <div class="hidden" id="logged-in">
+            <div id="no-repository">
+              <p> You're seeing this because you're <strong>logged in</strong>, but you have no <strong>Gitographer Repository</strong>! </p>
+              <p> A Gitographer Repository is a normal Github Repository that stores all your Gitographer Notes. </p>
+              <p> Would you like to create a <strong>Gitographer Repository</strong>? </p>
+              <button id="btn-create-repository" onclick="gitographer.createRepository()">Create Gitographer Repository</button>
+              <!-- <label> Access token: <pre id="ipt-access-token"></pre> </label> -->
+              <!-- <label> User profile: <pre id="ipt-user-profile"></pre> </label> -->
+            </div>
+            <div class="hidden" id="found-repository">
+              <p> You're seeing this because you're <strong>logged in</strong> and we found your Gitographer Repository. Congratulations! </p>
+              <p> You'll find your notes below... </p>
+            </div>
+            <button id="btn-logout" disabled="true" onclick="logout()">Log out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add the Third-party Dependencies and Scripts to the page
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="https://unpkg.com/github-api/dist/GitHub.bundle.min.js"></script>
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.1.0/auth0-spa-js.production.js"></script>
+    <script src="/js/noteApp.js"></script>
     <script src="/js/app.js"></script>
+    
+  <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   </body>
 </html>
+

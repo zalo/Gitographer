@@ -1,7 +1,6 @@
+var gitographer = null;
 let auth0 = null;
-
 const fetchAuthConfig = () => fetch("/auth_config.json");
-
 const configureClient = async () => {
     const response = await fetchAuthConfig();
     const config = await response.json();
@@ -14,26 +13,16 @@ const configureClient = async () => {
 
 window.onload = async () => {
     await configureClient();
-  
     // update the UI state
     updateUI();
-
     const isAuthenticated = await auth0.isAuthenticated();
-  
-    if (isAuthenticated) {
-      // show the gated content
-      return;
-    }
-  
+    if (isAuthenticated) { return; }
     // check for the code and state parameters
     const query = window.location.search;
     if (query.includes("code=") && query.includes("state=")) {
-  
       // Process the login state
       await auth0.handleRedirectCallback();
-      
       updateUI();
-  
       // Use replaceState to redirect the user away and remove the querystring parameters
       window.history.replaceState({}, document.title, "/");
     }
@@ -47,18 +36,17 @@ const updateUI = async () => {
   
   // NEW - add logic to show/hide gated content after authentication
   if (isAuthenticated) {
-    document.getElementById("gated-content").classList.remove("hidden");
+    document.getElementById("logged-out").classList.add("hidden");
+    document.getElementById("logged-in").classList.remove("hidden");
 
-    document.getElementById(
-      "ipt-access-token"
-    ).innerHTML = await auth0.getTokenSilently();
-
-    document.getElementById("ipt-user-profile").innerHTML = JSON.stringify(
-      await auth0.getUser()
-    );
-
+    let accessToken = await auth0.getTokenSilently();
+    let user = await auth0.getUser();
+    gitographer = new CreateGitographer(accessToken, user);
+    //document.getElementById("ipt-access-token").innerHTML = accessToken;
+    //document.getElementById("ipt-user-profile").innerHTML = JSON.stringify(await auth0.getUser());
   } else {
-    document.getElementById("gated-content").classList.add("hidden");
+    document.getElementById("logged-in").classList.add("hidden");
+    document.getElementById("logged-out").classList.remove("hidden");
   }
 };
 
