@@ -1,35 +1,22 @@
 var gitographer = null;
-let auth0 = null;
-const fetchAuthConfig = () => fetch("/auth_config.json");
-const configureClient = async () => {
-    const response = await fetchAuthConfig();
-    const config = await response.json();
-  
-    auth0 = await createAuth0Client({
-      domain: config.domain,
-      client_id: config.clientId
-    });
-};
 
 window.onload = async () => {
-    await configureClient();
-    // update the UI state
     updateUI();
-    const isAuthenticated = await auth0.isAuthenticated();
-    if (isAuthenticated) { return; }
-    // check for the code and state parameters
-    const query = window.location.search;
-    if (query.includes("code=") && query.includes("state=")) {
-      // Process the login state
-      await auth0.handleRedirectCallback();
-      updateUI();
-      // Use replaceState to redirect the user away and remove the querystring parameters
-      window.history.replaceState({}, document.title, "/");
-    }
 };
 
-const updateUI = async () => { 
-  const isAuthenticated = await auth0.isAuthenticated();
+const updateUI = async () => {
+  let isAuthenticated = false;
+  let githubToken = null;
+  if(window.location.hash){
+    isAuthenticated = true;
+    let hash = window.location.hash.substr(1);
+    let result = hash.split('&').reduce(function (result, item) {
+        var parts = item.split('=');
+        result[parts[0]] = parts[1];
+        return result;
+    }, {});
+    githubToken = result.access_token;
+  }
 
   document.getElementById("btn-logout").disabled = !isAuthenticated;
   document.getElementById("btn-login").disabled = isAuthenticated;
@@ -39,9 +26,7 @@ const updateUI = async () => {
     document.getElementById("logged-out").classList.add("hidden");
     document.getElementById("logged-in").classList.remove("hidden");
 
-    let accessToken = await auth0.getTokenSilently();
-    let user = await auth0.getUser();
-    gitographer = new CreateGitographer(accessToken, user);
+    gitographer = new CreateGitographer(githubToken);
     //document.getElementById("ipt-access-token").innerHTML = accessToken;
     //document.getElementById("ipt-user-profile").innerHTML = JSON.stringify(await auth0.getUser());
   } else {
@@ -51,13 +36,24 @@ const updateUI = async () => {
 };
 
 const login = async () => {
-    await auth0.loginWithRedirect({
-      redirect_uri: window.location.origin
-    });
+  window.location.assign('https://micro-github.zalo.now.sh/api/login');
+  /*var url = 'https://micro-github.zalo.now.sh/api/login';
+  var data = { redirect_uri: window.location.origin };
+  fetch(url, {
+    method: 'POST', // or 'PUT'
+    body: JSON.stringify(data), // data can be `string` or {object}!
+    headers:{
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS, POST',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    },
+    crossdomain: true
+  }).then(res => res.json())
+  .then(response => console.log('Success:', JSON.stringify(response)))
+  .catch(error => console.error('Error:', error));*/
 };
 
 const logout = () => {
-    auth0.logout({
-      returnTo: window.location.origin
-    });
+  document.location.assign(window.location.origin);
 };

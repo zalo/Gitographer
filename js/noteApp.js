@@ -1,13 +1,13 @@
-var CreateGitographer = function (githubAccessToken, githubUser) {
+var CreateGitographer = function (githubAccessToken) {
     this.initialize = function(){
-        console.log("Initializing Gitographer, access token:" +githubAccessToken + ", "+ JSON.stringify(githubUser));
-        this.gh = new GitHub({
-            token: githubAccessToken
-        });
+        console.log("Initializing Gitographer, access token:" + githubAccessToken);
+        this.gh = new GitHub({token: githubAccessToken});
 
         console.log(this.gh);
+        let githubUser = this.gh.getUser("zalo");
+        console.log(githubUser);
 
-        this.gh.getUser(githubUser.nickname).listRepos()
+        githubUser.listRepos()
             .then(function({data: reposJson}) {
                 console.log(githubUser.nickname+` has ${reposJson.length} repos!`);
             });
