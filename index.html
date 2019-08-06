@@ -43,7 +43,7 @@
           </div>
 
           <div class="hidden" id="logged-in">
-            <div id="no-repository">
+            <div class="hidden" id="no-repository">
               <p> You're seeing this because you're <strong>logged in</strong>, but you have no <strong>Gitographer Repository</strong>! </p>
               <p> A Gitographer Repository is a normal Github Repository that stores all your Gitographer Notes. </p>
               <p> Would you like to create a <strong>Gitographer Repository</strong>? </p>
@@ -53,10 +53,18 @@
             </div>
             <div class="hidden" id="found-repository">
               <p> You're seeing this because you're <strong>logged in</strong> and we found your Gitographer Repository. Congratulations! </p>
-              <p> You'll find your notes below... </p>
+              <p> You'll find your notes below... eventually... </p>
             </div>
             <button id="btn-logout" disabled="true" onclick="logout()">Log out</button>
           </div>
+
+          <div class="hidden" id="error-container">
+              <p>Oh no! Something unexpected went wrong!</p>
+              <p>See what happened below and report it on the <a href="https://github.com/zalo/Gitographer">Gitographer Github Page</a>.</p>
+              <pre><code id="error-friendly-msg"></code></pre>
+              <pre><code id="error-msg"></code></pre>
+          </div>
+
         </div>
       </div>
     </div>
