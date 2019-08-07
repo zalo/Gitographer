@@ -8,13 +8,17 @@
     <meta name="description" content="Homepage for the Gitographer Note App">
     <meta name="author" content="zalo">
 
+    <!-- Security
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com https://api.github.com 'unsafe-inline'">
+
     <!-- Mobile Specific Metas
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- FONT
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
 
     <!-- CSS
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -69,10 +73,8 @@
       </div>
     </div>
 
-    <!-- Add the Third-party Dependencies and Scripts to the page
+    <!-- Add Scripts to the page
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <script src="https://unpkg.com/github-api/dist/GitHub.bundle.min.js"></script>
-    <script src="https://cdn.auth0.com/js/auth0-spa-js/1.1.0/auth0-spa-js.production.js"></script>
     <script src="/js/noteApp.js"></script>
     <script src="/js/app.js"></script>
     
