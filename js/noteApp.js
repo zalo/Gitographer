@@ -64,6 +64,12 @@ var CreateGitographer = function (githubAccessToken) {
                 this.updateNoteDom();
             },
             (error) => {
+                if(error.message === "This repository is empty." && !this.triedToCreateNotesOnce){
+                    this.triedToCreateNotesOnce = true;
+                    this.reportError("No notes.json exists, attempting to create it...", error);
+                    this.createNotes();
+                }
+
                 this.notes = null;
                 this.reportError("Something broke while trying to get your notes...", error);
             });
@@ -130,39 +136,42 @@ var CreateGitographer = function (githubAccessToken) {
             (repoInfo)=>{
                 console.log("Repo created successfully!");
                 console.log(repoInfo);
-
-                // Define the settings for the initial Notes.json file
-                let initialNotesContent = {
-                    title: "Notes",
-                    notes: []
-                };
-                let initialNotesCommit = {
-                  "message": "Initial Gitographer Commit",
-                  "committer": {
-                    "name": this.githubUser.login + " via Gitographer",
-                    "email": this.githubUser.email
-                  },
-                  "content": btoa(JSON.stringify(initialNotesContent, null, 2))
-                };
-
-                // Create the initial Notes.json file
-                let filename = (initialNotesContent.title).toLowerCase()+'.json';
-                this.ghPost('repos/'+this.githubUser.login+'/'+repositorySettings.name+'/contents/'+filename, 
-                    initialNotesCommit, 
-                    (noteInfo)=>{
-                        console.log("Created "+filename);
-                        console.log(noteInfo);
-                        document.getElementById("no-repository").classList.add("hidden"); 
-                        document.getElementById("found-repository").classList.remove("hidden"); 
-                        this.pullNotes();
-                    },
-                    (error)=>{
-                        this.reportError("Something broke while trying to commit the initial notes.json file...", error);
-                    }, 'PUT');
+                this.createNotes();
             },
             (error)=>{
                 this.reportError("Something broke while trying to create the repository...", error);
             });
+    }
+
+    this.createNotes = function(){
+        // Define the settings for the initial Notes.json file
+        let initialNotesContent = {
+            title: "Notes",
+            notes: []
+        };
+        let initialNotesCommit = {
+          "message": "Initial Gitographer Commit",
+          "committer": {
+            "name": this.githubUser.login + " via Gitographer",
+            "email": (this.githubUser.email) ? this.githubUser.email : "api@gitographer.com"
+          },
+          "content": btoa(JSON.stringify(initialNotesContent, null, 2))
+        };
+        // Create the initial Notes.json file
+        let filename = (initialNotesContent.title).toLowerCase()+'.json';
+        this.ghPost('repos/'+this.githubUser.login+'/'+repositorySettings.name+'/contents/'+filename, 
+            initialNotesCommit, 
+            (noteInfo)=>{
+                console.log("Created "+filename);
+                console.log(noteInfo);
+                document.getElementById("no-repository").classList.add("hidden"); 
+                document.getElementById("found-repository").classList.remove("hidden");
+                document.getElementById("error-container").classList.add("hidden");
+                this.pullNotes();
+            },
+            (error)=>{
+                this.reportError("Something broke while trying to commit the initial notes.json file...", error);
+            }, 'PUT');
     }
 
     this.ghGet = function(endpoint, callback, errorCallback){
