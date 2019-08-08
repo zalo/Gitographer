@@ -1,5 +1,7 @@
 var CreateGitographer = function (githubAccessToken) {
     this.githubAccessToken = githubAccessToken;
+    this.notes = null;
+    this.noteElements = [];
 
     this.initialize = function(){
         console.log("Initializing Gitographer, access token:" + this.githubAccessToken);
@@ -15,6 +17,7 @@ var CreateGitographer = function (githubAccessToken) {
                     this.repo = repoData; 
                     console.log(repoData);
                     document.getElementById("found-repository").classList.remove("hidden"); 
+                    this.pullNotes();
                 },
                 (error) => {
                     this.repo = null;
@@ -28,6 +31,86 @@ var CreateGitographer = function (githubAccessToken) {
         }, (error)=>{
             this.reportError("Something broke while trying to get to the current user...", error);
         });
+    }
+
+    this.updateNoteDom = function(){
+        let noteContainer = document.getElementById("note-container");
+        // Remove all elements
+        while (noteContainer.firstChild) { noteContainer.removeChild(noteContainer.lastChild); }
+        this.noteElements = [];
+
+        this.notes.notes.forEach((note) => {
+            let noteElement = document.createElement('div');
+            noteElement.innerHTML = note.content;
+            noteElement.contentEditable = true;
+            noteElement.spellcheck = false;
+            noteElement.classList.add("note");
+            noteContainer.appendChild(noteElement);
+            this.noteElements.push(noteElement);
+        });
+    }
+
+    this.pullNotes = function() {
+        if(document.getElementById("edit-box").innerHTML){
+            document.getElementById("edit-box").innerHTML = "";
+        }
+        this.ghGet("repos/"+this.githubUser.login+"/gitographer-notes/contents/notes.json", 
+            (noteData) => {
+                console.log("Received notes!");
+                console.log(noteData);
+                this.notes = JSON.parse(atob(noteData.content));
+                console.log(this.notes);
+                this.noteSha = noteData.sha;
+
+                // Update the listed notes...
+                this.updateNoteDom();
+            },
+            (error) => {
+                this.notes = null;
+                this.reportError("Something broke while trying to get your notes...", error);
+            });
+    }
+
+    this.pushNotes = function() {
+        let dirty = false;
+        if(document.getElementById("edit-box").innerHTML){
+            dirty = true;
+            this.notes.notes.push({
+                id: parseInt(Math.random()*1000000000, 10),
+                content: document.getElementById("edit-box").innerHTML
+            });
+        }
+        this.noteElements.forEach((noteElement, i) => {
+            if(this.notes.notes[i].content !== noteElement.innerHTML){
+                dirty = true;
+                this.notes.notes[i].content = noteElement.innerHTML;
+            }
+        });
+
+        if (dirty) {
+            let notesCommit = {
+                "message": "Gitographer Update",
+                "committer": {
+                "name": this.githubUser.login + " via Gitographer",
+                "email": this.githubUser.email
+                },
+                "content": btoa(JSON.stringify(this.notes, null, 2)),
+                "sha": this.noteSha
+            };
+            let filename = (this.notes.title).toLowerCase()+'.json';
+            this.ghPost('repos/'+this.githubUser.login+'/gitographer-notes/contents/'+filename, 
+                notesCommit, 
+                (noteInfo)=>{
+                    console.log("Updated "+filename);
+                    console.log(noteInfo);
+                    this.pullNotes();
+                },
+                (error)=>{
+                    this.reportError("Something broke while trying to commit the notes .json file...", error);
+                }, 'PUT');
+        } else{
+            console.log("Nothing has changed, aborting commit...")
+        }
     }
 
     this.createRepository = function(){

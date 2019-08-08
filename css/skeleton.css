@@ -41,6 +41,20 @@
   float: left;
   box-sizing: border-box; }
 
+.note {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+  padding: 16px;
+  border-radius: 4px;
+  background-color: #FFF; }
+
+.note-editor {
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+  padding: 16px;
+  border-radius: 4px;
+  background-color: #FFF; }
+
 /* For devices larger than 400px */
 @media (min-width: 400px) {
   .container {

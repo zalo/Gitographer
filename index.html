@@ -52,14 +52,17 @@
               <p> A Gitographer Repository is a normal Github Repository that stores all your Gitographer Notes. </p>
               <p> Would you like to create a <strong>Gitographer Repository</strong>? </p>
               <button id="btn-create-repository" onclick="gitographer.createRepository()">Create Gitographer Repository</button>
-              <!-- <label> Access token: <pre id="ipt-access-token"></pre> </label> -->
-              <!-- <label> User profile: <pre id="ipt-user-profile"></pre> </label> -->
+              <button id="btn-logout" disabled="true" onclick="logout()">Log out</button>
             </div>
             <div class="hidden" id="found-repository">
-              <p> You're seeing this because you're <strong>logged in</strong> and we found your Gitographer Repository. Congratulations! </p>
-              <p> You'll find your notes below... eventually... </p>
+              <button id="btn-push-repository" onclick="gitographer.pushNotes()">Commit to Gitographer Repository</button> <button id="btn-logout" disabled="true" onclick="logout()">Log out</button>
+              <div id="note-editor-and-note-container">
+                  <div id="note-editor-container">
+                      <div id="edit-box" contenteditable="true" class="note-editor"></div>
+                  </div>
+                  <div id="note-container"></div>
+              </div>
             </div>
-            <button id="btn-logout" disabled="true" onclick="logout()">Log out</button>
           </div>
 
           <div class="hidden" id="error-container">
