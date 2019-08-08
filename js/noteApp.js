@@ -68,10 +68,10 @@ var CreateGitographer = function (githubAccessToken) {
                     this.triedToCreateNotesOnce = true;
                     this.reportError("No notes.json exists, attempting to create it...", error);
                     this.createNotes();
+                }else{
+                    this.notes = null;
+                    this.reportError("Something broke while trying to get your notes...", error);
                 }
-
-                this.notes = null;
-                this.reportError("Something broke while trying to get your notes...", error);
             });
     }
 
