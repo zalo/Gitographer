@@ -95,8 +95,8 @@ var CreateGitographer = function (githubAccessToken) {
             let notesCommit = {
                 "message": "Gitographer Update",
                 "committer": {
-                "name": this.githubUser.login + " via Gitographer",
-                "email": this.githubUser.email
+                    "name": this.githubUser.login + " via Gitographer",
+                    "email": (this.githubUser.email) ? this.githubUser.email : "api@gitographer.com"
                 },
                 "content": btoa(JSON.stringify(this.notes, null, 2)),
                 "sha": this.noteSha
