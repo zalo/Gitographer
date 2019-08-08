@@ -154,6 +154,7 @@ var CreateGitographer = function (githubAccessToken) {
                         console.log(noteInfo);
                         document.getElementById("no-repository").classList.add("hidden"); 
                         document.getElementById("found-repository").classList.remove("hidden"); 
+                        this.pullNotes();
                     },
                     (error)=>{
                         this.reportError("Something broke while trying to commit the initial notes.json file...", error);
