@@ -159,7 +159,7 @@ var CreateGitographer = function (githubAccessToken) {
         };
         // Create the initial Notes.json file
         let filename = (initialNotesContent.title).toLowerCase()+'.json';
-        this.ghPost('repos/'+this.githubUser.login+'/'+repositorySettings.name+'/contents/'+filename, 
+        this.ghPost('repos/'+this.githubUser.login+'/gitographer-notes/contents/'+filename, 
             initialNotesCommit, 
             (noteInfo)=>{
                 console.log("Created "+filename);
