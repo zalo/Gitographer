@@ -56,7 +56,7 @@ var CreateGitographer = function (githubAccessToken) {
             (noteData) => {
                 console.log("Received notes!");
                 console.log(noteData);
-                this.notes = JSON.parse(atob(noteData.content));
+                this.notes = JSON.parse(this.atobUTF16(noteData.content));
                 console.log(this.notes);
                 this.noteSha = noteData.sha;
 
@@ -98,7 +98,7 @@ var CreateGitographer = function (githubAccessToken) {
                     "name": this.githubUser.login + " via Gitographer",
                     "email": (this.githubUser.email) ? this.githubUser.email : "api@gitographer.com"
                 },
-                "content": btoa(JSON.stringify(this.notes, null, 2)),
+                "content": this.btoaUTF16(JSON.stringify(this.notes, null, 2)),
                 "sha": this.noteSha
             };
             let filename = (this.notes.title).toLowerCase()+'.json';
@@ -155,7 +155,7 @@ var CreateGitographer = function (githubAccessToken) {
             "name": this.githubUser.login + " via Gitographer",
             "email": (this.githubUser.email) ? this.githubUser.email : "api@gitographer.com"
           },
-          "content": btoa(JSON.stringify(initialNotesContent, null, 2))
+          "content": this.btoaUTF16(JSON.stringify(initialNotesContent, null, 2))
         };
         // Create the initial Notes.json file
         let filename = (initialNotesContent.title).toLowerCase()+'.json';
