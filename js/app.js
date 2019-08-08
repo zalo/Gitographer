@@ -1,8 +1,8 @@
+// The primary Gitographer instance
 var gitographer = null;
 
-window.onload = async () => { updateUI(); };
-
-const updateUI = async () => {
+// Manage the login-flow and initializing the Gitographer instance
+window.onload = async () => { 
   let isAuthenticated = false;
   let githubToken = null;
   if(window.location.hash){
@@ -14,6 +14,9 @@ const updateUI = async () => {
         return result;
     }, {});
     githubToken = result.access_token;
+    
+    // Hide the token from the URL
+    window.history.replaceState({}, "Gitographer Notes", "/");
   }
 
   document.getElementById("btn-logout").disabled = !isAuthenticated;

@@ -4,8 +4,6 @@ var CreateGitographer = function (githubAccessToken) {
     this.noteElements = [];
 
     this.initialize = function(){
-        console.log("Initializing Gitographer, access token:" + this.githubAccessToken);
-
         this.ghGet("user", (userData)=>{
             this.githubUser = userData;
             console.log(this.githubUser);
