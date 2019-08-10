@@ -38,19 +38,37 @@ var CreateGitographer = function (githubAccessToken) {
         this.noteElements = [];
 
         this.notes.notes.forEach((note) => {
-            let noteElement = document.createElement('div');
-            noteElement.innerHTML = note.content;
-            noteElement.contentEditable = true;
+            let noteElement = document.createElement('textarea');
+            noteElement.value = note.content;
             noteElement.spellcheck = false;
             noteElement.classList.add("note");
+            noteElement.columns = 50;
             noteContainer.appendChild(noteElement);
             this.noteElements.push(noteElement);
+            this.expandTextField(noteElement);
         });
     }
 
+    this.expandTextField = function(field){
+        // Reset field height
+        field.style.height = 'inherit';
+    
+        // Get the computed styles for the element
+        var computed = window.getComputedStyle(field);
+    
+        // Calculate the height
+        var height = parseInt(computed.getPropertyValue('border-top-width'), 10)
+                     + parseInt(computed.getPropertyValue('padding-top'), 10)
+                     + (field.scrollHeight - 30)
+                     + parseInt(computed.getPropertyValue('padding-bottom'), 10)
+                     + parseInt(computed.getPropertyValue('border-bottom-width'), 10);
+    
+        field.style.height = height + 'px';
+    }
+
     this.pullNotes = function() {
-        if(document.getElementById("edit-box").innerHTML){
-            document.getElementById("edit-box").innerHTML = "";
+        if(document.getElementById("edit-box").value){
+            document.getElementById("edit-box").value = "";
         }
         this.ghGet("repos/"+this.githubUser.login+"/gitographer-notes/contents/notes.json", 
             (noteData) => {
@@ -78,17 +96,21 @@ var CreateGitographer = function (githubAccessToken) {
 
     this.pushNotes = function() {
         let dirty = false;
-        if(document.getElementById("edit-box").innerHTML){
+        if(document.getElementById("edit-box").value){
             dirty = true;
-            this.notes.notes.push({
-                id: parseInt(Math.random()*1000000000, 10),
-                content: document.getElementById("edit-box").innerHTML
+
+            let rawNotes = document.getElementById("edit-box").value.split("\n\n");
+            rawNotes.forEach((rawNoteString, i) => {
+                this.notes.notes.push({
+                    id: parseInt(Math.random()*1000000000, 10),
+                    content: rawNoteString
+                });
             });
         }
         this.noteElements.forEach((noteElement, i) => {
-            if(this.notes.notes[i].content !== noteElement.innerHTML){
+            if(this.notes.notes[i].content !== noteElement.value){
                 dirty = true;
-                this.notes.notes[i].content = noteElement.innerHTML;
+                this.notes.notes[i].content = noteElement.value;
             }
         });
 

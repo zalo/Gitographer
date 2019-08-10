@@ -7,7 +7,6 @@
 * 12/29/2014
 */
 
-
 /* Table of contents
 ––––––––––––––––––––––––––––––––––––––––––––––––––
 - Grid
@@ -24,7 +23,6 @@
 - Clearing
 - Media Queries
 */
-
 
 /* Grid
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -53,7 +51,8 @@
   margin-bottom: 20px;
   padding: 16px;
   border-radius: 4px;
-  background-color: #FFF; }
+  background-color: #FFF;
+  min-height: 5em; }
 
 /* For devices larger than 400px */
 @media (min-width: 400px) {
@@ -126,7 +125,6 @@
 
 }
 
-
 /* Base Styles
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 /* NOTE
@@ -141,7 +139,6 @@ body {
   font-display: swap;
   font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #222; }
-
 
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -169,14 +166,12 @@ h6 { font-size: 1.5rem; line-height: 1.6;  letter-spacing: 0; }
 p {
   margin-top: 0; }
 
-
 /* Links
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a {
   color: #1EAEDB; }
 a:hover {
   color: #0FA0CE; }
-
 
 /* Buttons
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -237,7 +232,6 @@ input[type="button"].button-primary:focus {
   background-color: #1EAEDB;
   border-color: #1EAEDB; }
 
-
 /* Forms
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 input[type="email"],
@@ -269,9 +263,10 @@ textarea {
      -moz-appearance: none;
           appearance: none; }
 textarea {
-  min-height: 65px;
+  min-height: 45px;
   padding-top: 6px;
-  padding-bottom: 6px; }
+  padding-bottom: 6px;
+  width: 100%; }
 input[type="email"]:focus,
 input[type="number"]:focus,
 input[type="search"]:focus,
@@ -299,7 +294,6 @@ label > .label-body {
   margin-left: .5rem;
   font-weight: normal; }
 
-
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
@@ -318,7 +312,6 @@ ol ul {
 li {
   margin-bottom: 1rem; }
 
-
 /* Code
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 code {
@@ -334,7 +327,6 @@ pre > code {
   padding: 1rem 1.5rem;
   white-space: pre; }
 
-
 /* Tables
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 th,
@@ -348,7 +340,6 @@ td:first-child {
 th:last-child,
 td:last-child {
   padding-right: 0; }
-
 
 /* Spacing
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -371,7 +362,6 @@ ol,
 form {
   margin-bottom: 2.5rem; }
 
-
 /* Utilities
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .u-full-width {
@@ -385,7 +375,6 @@ form {
 .u-pull-left {
   float: left; }
 
-
 /* Misc
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 hr {
@@ -393,7 +382,6 @@ hr {
   margin-bottom: 3.5rem;
   border-width: 0;
   border-top: 1px solid #E1E1E1; }
-
 
 /* Clearing
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -406,7 +394,6 @@ hr {
   display: table;
   clear: both; }
 
-
 /* Media Queries
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 /*
@@ -415,7 +402,6 @@ near the relevant code. For example, if you wanted to change the styles for butt
 on small devices, paste the mobile query code up in the buttons section and style it
 there.
 */
-
 
 /* Larger than mobile */
 @media (min-width: 400px) {}
