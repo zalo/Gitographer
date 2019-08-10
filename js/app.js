@@ -16,7 +16,9 @@ window.onload = async () => {
     githubToken = result.access_token;
     
     // Hide the token from the URL
-    window.history.replaceState({}, "Gitographer Notes", "/");
+    if(window.location.origin !== "http://localhost:8888"){
+      window.history.replaceState({}, "Gitographer Notes", "/");
+    }
   }
 
   document.getElementById("btn-logout").disabled = !isAuthenticated;
