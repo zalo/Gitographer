@@ -147,7 +147,7 @@ var CreateGitographer = function (githubAccessToken) {
         let repositorySettings = {
           "name": "gitographer-notes",
           "description": "Your private Gitographer storage space",
-          "homepage": "https://gitographer.com",
+          "homepage": "https://zalo.github.io/gitographer/",
           "private": true,
           "has_issues": false,
           "has_projects": false,
